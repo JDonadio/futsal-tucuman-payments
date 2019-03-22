@@ -33,11 +33,8 @@ export class HomePage implements OnInit {
   ) {
     this.focusedTeam = null;
     this.editMode = false;
-    // this.months = months;
     this.teamForm = this.formBuilder.group({
       name: ['', Validators.required],
-      amount: [0, Validators.required],
-      month: ['', Validators.required],
       division: ['', Validators.required],
     });
   }
@@ -67,9 +64,6 @@ export class HomePage implements OnInit {
     if (team && team.key) {
       this.focusedTeam = team.key;
       this.teamForm.patchValue({ name: team.name });
-      this.teamForm.patchValue({ amount: team.amount || 0 });
-      this.teamForm.patchValue({ month: team.month || '3' });
-      this.selectedMonth = team.month || '3';
       this.teamForm.patchValue({ division: team.division.key });
       this.selectedDivision = team.division.key;
     } else this.focusedTeam = null;
@@ -79,12 +73,8 @@ export class HomePage implements OnInit {
     console.log(this.teamForm.value);
     let divisionKey = this.teamForm.get('division').value;
     let division = _.find(this.divisions, d => d.key == divisionKey);
-    let monthKey = this.teamForm.get('month').value;
-    let month = _.find(this.months, m => m.key == monthKey);
     let team = {
       name: this.teamForm.get('name').value,
-      amount: parseInt(this.teamForm.get('amount').value),
-      month: month.key,
       division
     }
 
@@ -123,11 +113,5 @@ export class HomePage implements OnInit {
       componentProps: { ctx: team }
     });
     await modal.present();
-    const { data } = await modal.onDidDismiss();
-
-    if (data && data.edit) {
-      let month = data && data.month || '3';
-      this.changeEditMode(team)
-    }
   }
 }

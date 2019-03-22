@@ -20,8 +20,7 @@
         <ion-row>
           <ion-col>Nombre</ion-col>
           <ion-col text-center>División</ion-col>
-          <ion-col text-center>Aporte $</ion-col>
-          <ion-col text-center>Estado</ion-col>
+          <ion-col text-center>Aporte anual</ion-col>
           <ion-col text-center size="3">Acciones</ion-col>
         </ion-row>
       </ion-card-subtitle>
@@ -32,7 +31,6 @@
         <ion-col>{{t.name | uppercase}}</ion-col>
         <ion-col text-center>{{t.division.name | uppercase}}</ion-col>
         <ion-col text-center>${{t.totalAmount}}</ion-col>
-        <ion-col text-center>{{t.totalAmount <= 400 ? 'rojo' : t.totalAmount > 400 && t.totalAmount <= 600 ? 'naranja' : 'negro'}}</ion-col>
         <ion-col text-center size="3">
           <div class="action-buttons">
             <ion-button size="small" fill="clear" (click)="changeEditMode(t)"><ion-icon name="create"></ion-icon></ion-button>
@@ -54,16 +52,6 @@
         <ion-item>
           <ion-label position="stacked">Nombre de equipo</ion-label>
           <ion-input type="text" formControlName="name" autofocus (keyup.enter)="edit()"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="stacked">Aporte</ion-label>
-          <ion-input type="number" formControlName="amount" (keyup.enter)="edit()"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="stacked">Mes</ion-label>
-          <ion-select formControlName="month" [value]="selectedMonth">
-            <ion-select-option *ngFor="let m of months" value="{{m.key}}">{{m.name | uppercase}}</ion-select-option>
-          </ion-select>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">División</ion-label>

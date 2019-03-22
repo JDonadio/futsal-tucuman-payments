@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { FirebaseService } from '../services/firebase.service';
 import { MessagesService } from '../services/messages.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-modal-team',
@@ -26,11 +27,10 @@ export class ModalTeamPage implements OnInit {
     this.editFor = {};
     this.editMode = false;
     this.amount = 0;
-    this.team = this.navParams.data.ctx;
   }
-
+  
   ngOnInit() {
-    console.log(this.team);
+    this.team = _.cloneDeep(this.navParams.data.ctx);
     this.title = this.team.name.toUpperCase() + ' - División ' + this.team.division.name.toUpperCase();
   }
 
@@ -48,7 +48,10 @@ export class ModalTeamPage implements OnInit {
     delete this.editFor[index];
   }
 
-  confirmEdition() {
+  async confirmEdition() {
+    let resp = await this.messagesService.showConfirm({ title: 'Confirmar cambios.', msg: '¿Estás seguro de confirmar los cambios?'});
+    if (!resp) return;
+    
     try {
       this.firebaseService.updateObject(`teams/${this.team.key}`, this.team);
       this.messagesService.showToast({ msg: `El equipo ${this.team.name} ha sido editado correctamente!` });

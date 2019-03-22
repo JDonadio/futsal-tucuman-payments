@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title text-center>{{title}}</ion-title>
     <ion-buttons slot="primary">
-      <ion-button (click)="close()">
+      <ion-button (click)="close()" class="close-button">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -16,7 +16,7 @@
       <ion-card-subtitle>
         <ion-row>
           <ion-col>Mes</ion-col>
-          <ion-col text-center>Aporte $</ion-col>
+          <ion-col text-center>Aporte mensual</ion-col>
           <ion-col text-center>Estado</ion-col>
           <ion-col text-center size="3">Acciones</ion-col>
         </ion-row>
@@ -30,7 +30,11 @@
         <ion-col text-center *ngIf="editFor[i]">
           <ion-input type="number" [(ngModel)]="p.amount"></ion-input>
         </ion-col>
-        <ion-col text-center>{{p.amount <= 600 ? 'rojo' : p.amount > 600 && p.amount < 1000 ? 'naranja' : 'negro'}}</ion-col>
+        <ion-col text-center class="status">
+          <ion-icon name="heart-dislike" *ngIf="p.amount <= 600" class="red"></ion-icon>
+          <ion-icon name="heart-half" *ngIf="p.amount > 600 && p.amount < 1000" class="orange"></ion-icon>
+          <ion-icon name="heart" *ngIf="p.amount >= 1000"></ion-icon>
+        </ion-col>
         <ion-col text-center size="3">
           <div class="action-buttons">
             <ion-button size="small" fill="clear" (click)="edit(i)" *ngIf="!editFor[i]"><ion-icon name="create"></ion-icon></ion-button>

@@ -10,3 +10,21 @@ ion-input {
   border: 1px solid #cccccc;
   text-align: center;
 }
+.close-button {
+  ion-icon {
+    color: var(--ion-color-primary);
+    padding-right: 1rem;
+  }
+}
+.status {
+  ion-icon {
+    font-size: 1.5rem;
+    color: var(--ion-color-primary);
+  }
+}
+.red {
+  color: red !important;
+}
+.orange {
+  color: orange !important;
+}
