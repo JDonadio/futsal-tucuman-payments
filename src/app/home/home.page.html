@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Home</ion-title>
     <ion-buttons slot="primary" *ngIf="editMode">
       <ion-button (click)="changeEditMode()" class="close-button">
@@ -54,19 +57,15 @@
           <ion-input type="number" formControlName="amount" (keyup.enter)="edit()"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-label position="stacked">Período</ion-label>
-          <ion-select placeholder="Seleccionar período" (ionChange)="periodChange($event)" formControlName="period">
-            <div *ngFor="let m of months">
-              <ion-select-option value="m.value" required>{{m.name | uppercase}}</ion-select-option>
-            </div>
+          <ion-label position="stacked">Mes</ion-label>
+          <ion-select formControlName="month" [value]="selectedMonth">
+            <ion-select-option *ngFor="let m of months" value="{{m.key}}">{{m.name | uppercase}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item>
           <ion-label position="stacked">División</ion-label>
-          <ion-select placeholder="Seleccionar División" (ionChange)="divisionChange($event)" formControlName="division">
-            <div *ngFor="let d of divisions">
-              <ion-select-option [value]="d.key" required>{{d.name | uppercase}}</ion-select-option>
-            </div>
+          <ion-select formControlName="division" [value]="selectedDivision">
+            <ion-select-option *ngFor="let d of divisions" value="{{d.key}}">{{d.name | uppercase}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-button expand="block" type="submit" [disabled]="teamForm.invalid" block>Editar</ion-button>

@@ -43,7 +43,7 @@ export class FirebaseService {
     });
   }
 
-  removeObject(ref: string, opts: any): Promise<any> {
+  removeObject(ref: string, opts?: any): Promise<any> {
     return new Promise((resolve, reject) => {
       try {
         this.db.object(ref).remove();

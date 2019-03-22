@@ -1,23 +1,23 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { SharingService } from '../services/sharing.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AngularFireDatabase } from 'angularfire2/database';
-import { Plugins } from '@capacitor/core';
-import { AlertController } from '@ionic/angular';
-const { Toast } = Plugins;
+import { FirebaseService } from '../services/firebase.service';
+import { MessagesService } from '../services/messages.service';
+import * as _ from 'lodash';
+
 const months = [
-  { name: 'enero', value: 1 },
-  { name: 'febrero', value: 2 },
-  { name: 'marzo', value: 3 },
-  { name: 'abril', value: 4 },
-  { name: 'mayo', value: 5 },
-  { name: 'junio', value: 6 },
-  { name: 'julio', value: 7 },
-  { name: 'agosto', value: 8 },
-  { name: 'septiembre', value: 9 },
-  { name: 'octubre', value: 10 },
-  { name: 'noviembre', value: 11 },
-  { name: 'diciembre', value: 12 },
+  // { name: 'enero', key: 1 },
+  // { name: 'febrero', key: 2 },
+  { name: 'marzo', key: '3' },
+  { name: 'abril', key: '4' },
+  { name: 'mayo', key: '5' },
+  { name: 'junio', key: '6' },
+  { name: 'julio', key: '7' },
+  { name: 'agosto', key: '8' },
+  { name: 'septiembre', key: '9' },
+  { name: 'octubre', key: '10' },
+  { name: 'noviembre', key: '11' },
+  { name: 'diciembre', key: '12' },
 ];
 
 @Component({
@@ -32,50 +32,41 @@ export class HomePage implements OnInit {
   public teams: any;
   public editMode: boolean;
   public teamForm: FormGroup;
-  public selectedCategory: number;
-  public selectedPeriod: number;
+  public selectedDivision: string;
+  public selectedMonth: string;
   private focusedTeam: string;
 
   constructor(
+    private firebaseService: FirebaseService,
     private sharingService: SharingService,
+    private messagesService: MessagesService,
     private zone: NgZone,
-    private db: AngularFireDatabase,
     private formBuilder: FormBuilder,
-    private alertCtrl: AlertController
   ) {
     this.focusedTeam = null;
     this.editMode = false;
-    this.selectedCategory = 0;
-    this.selectedPeriod = 0;
     this.months = months;
     this.teamForm = this.formBuilder.group({
       name: ['', Validators.required],
-      period: [0, Validators.required],
       amount: [0, Validators.required],
-      category: [null, Validators.required],
+      month: ['', Validators.required],
+      division: ['', Validators.required],
     });
+  }
+  
+  ngOnInit() {
     this.sharingService.currentDivisions.subscribe(divisions => {
-      this.divisions = divisions;
       this.zone.run(() => {
-        this.teamForm.patchValue({ category: divisions && divisions[0] ? divisions[0].key : 0 });
+        this.divisions = divisions;
+        this.selectedDivision = divisions && divisions[0] && divisions[0].key;
       });
     });
     this.sharingService.currentTeams.subscribe(teams => {
       this.zone.run(() => {
         this.teams = teams;
+        this.selectedMonth = '3';
       });
     });
-  }
-
-  ngOnInit() {
-  }
-
-  categoryChange(event) {
-    this.selectedCategory = event.target.value;
-  }
-
-  periodChange(event) {
-    this.selectedPeriod = event.target.value;
   }
 
   changeEditMode(team?: any) {
@@ -85,69 +76,50 @@ export class HomePage implements OnInit {
       this.focusedTeam = team.key;
       this.teamForm.patchValue({ name: team.name });
       this.teamForm.patchValue({ amount: team.amount || 0 });
-      this.teamForm.patchValue({ period: team.period || 0 });
-      this.teamForm.patchValue({ category: team.category.key });
+      this.teamForm.patchValue({ month: team.month || '3' });
+      this.selectedMonth = team.month || '3';
+      this.teamForm.patchValue({ division: team.division.key });
+      this.selectedDivision = team.division.key;
     } else this.focusedTeam = null;
   }
 
   edit() {
-    if (this.teamForm.invalid || this.selectedCategory == null || this.selectedPeriod == null) return;
-
-    let category = this.teamForm.get('category').value;
+    console.log(this.teamForm.value);
+    let divisionKey = this.teamForm.get('division').value;
+    let division = _.find(this.divisions, d => d.key == divisionKey);
+    let monthKey = this.teamForm.get('month').value;
+    let month = _.find(this.months, m => m.key == monthKey);
     let team = {
       name: this.teamForm.get('name').value,
       amount: parseInt(this.teamForm.get('amount').value),
-      period: this.teamForm.get('period').value || 0,
-      category: {
-        name: this.divisions[category].name,
-        key: category
-      }
+      month: month.key,
+      division
     }
 
     try {
-      this.db.object(`teams/${this.focusedTeam}`).update(team);
-      this.show(`El equipo ${team.name} ha sido editado correctamente!`);
+      this.firebaseService.updateObject(`teams/${this.focusedTeam}`, team);
+      this.messagesService.showToast({ msg: `El equipo ${team.name} ha sido editado correctamente!` });
       this.changeEditMode();
     } catch (err) {
       console.log(err);
-      this.show('Ha ocurrido un error. No se pudo editar el equipo.');
+      this.messagesService.showToast({ msg: 'Ha ocurrido un error. No se pudo editar el equipo.' });
     }
   }
 
   remove(team) {
     try {
-      this.db.object(`teams/${team.key}`).remove();
-      this.show(`El equipo ${team.name} ha sido eliminado correctamente!`);
+      this.firebaseService.removeObject(`teams/${team.key}`);
+      this.messagesService.showToast({ msg: `El equipo ${team.name} ha sido eliminado correctamente!` });
     } catch (err) {
       console.log(err);
-      this.show('Ha ocurrido un error. No se pudo eliminar el equipo.');
+      this.messagesService.showToast({ msg: 'Ha ocurrido un error. No se pudo eliminar el equipo.' });
     }
   }
 
   async askForRemove(team) {
-    const alert = await this.alertCtrl.create({
-      header: 'Eliminar equipo',
-      message: `¿Estás seguro de eliminar a ${team.name.toUpperCase()}?`,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-        }, {
-          text: 'Si, eliminar',
-          handler: () => {
-            this.remove(team);
-          }
-        }
-      ]
-    });
-    await alert.present();
+    this.messagesService.showConfirm({ 
+      title: 'Eliminar equipo', 
+      msg: `¿Estás seguro de eliminar a ${team.name.toUpperCase()}?`
+    }).then(() => this.remove(team))
   }
-
-  async show(msg) {
-    await Toast.show({
-      text: msg
-    });
-  }
-
 }
