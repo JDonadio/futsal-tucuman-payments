@@ -22,20 +22,23 @@
           <ion-col text-center>División</ion-col>
           <ion-col text-center>Aporte $</ion-col>
           <ion-col text-center>Estado</ion-col>
-          <ion-col text-center>Acciones</ion-col>
+          <ion-col text-center size="3">Acciones</ion-col>
         </ion-row>
       </ion-card-subtitle>
     </ion-card-header>
 
     <ion-card-content>
-      <ion-row *ngFor="let t of teams">
+      <ion-row *ngFor="let t of teams; let i = index">
         <ion-col>{{t.name | uppercase}}</ion-col>
         <ion-col text-center>{{t.division.name | uppercase}}</ion-col>
-        <ion-col text-center>${{t.amount}}</ion-col>
-        <ion-col text-center>{{t.amount <= 400 ? 'No' : t.amount > 400 && t.amount <= 600 ? 'Si' : 'Re si'}}</ion-col>
-        <ion-col text-center>
-          <ion-button size="small" fill="clear" (click)="changeEditMode(t)"><ion-icon name="create"></ion-icon></ion-button>
-          <ion-button size="small" fill="clear" (click)="askForRemove(t)"><ion-icon name="trash"></ion-icon></ion-button>
+        <ion-col text-center>${{t.totalAmount}}</ion-col>
+        <ion-col text-center>{{t.totalAmount <= 400 ? 'rojo' : t.totalAmount > 400 && t.totalAmount <= 600 ? 'naranja' : 'negro'}}</ion-col>
+        <ion-col text-center size="3">
+          <div class="action-buttons">
+            <ion-button size="small" fill="clear" (click)="changeEditMode(t)"><ion-icon name="create"></ion-icon></ion-button>
+            <ion-button size="small" fill="clear" (click)="askForRemove(t)"><ion-icon name="trash"></ion-icon></ion-button>
+            <ion-button size="small" fill="clear" (click)="openModal(t)"><ion-icon name="information-circle-outline"></ion-icon></ion-button>
+          </div>
         </ion-col>
       </ion-row>
     </ion-card-content>
@@ -68,7 +71,7 @@
             <ion-select-option *ngFor="let d of divisions" value="{{d.key}}">{{d.name | uppercase}}</ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-button expand="block" type="submit" [disabled]="teamForm.invalid" block>Editar</ion-button>
+        <ion-button expand="block" class="sbm" type="submit" [disabled]="teamForm.invalid" block>Editar</ion-button>
       </form>
     </ion-card-content>
   </ion-card>

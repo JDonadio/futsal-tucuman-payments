@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { HomePage } from './home.page';
-import { ModalTeamPage } from '../modal-team/modal-team.page';
+import { ModalTeamPage } from './modal-team.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomePage
+    component: ModalTeamPage
   }
 ];
 
@@ -20,10 +19,8 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReactiveFormsModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [HomePage, ModalTeamPage],
-  entryComponents: [ModalTeamPage]
+  declarations: [ModalTeamPage]
 })
-export class HomePageModule {}
+export class ModalTeamPageModule {}

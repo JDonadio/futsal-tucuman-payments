@@ -5,6 +5,21 @@ import { SharingService } from '../services/sharing.service';
 import { MessagesService } from '../services/messages.service';
 import * as _ from 'lodash';
 
+const months = [
+  // { name: 'enero', key: 1 },
+  // { name: 'febrero', key: 2 },
+  { name: 'marzo', key: '3' },
+  { name: 'abril', key: '4' },
+  { name: 'mayo', key: '5' },
+  { name: 'junio', key: '6' },
+  { name: 'julio', key: '7' },
+  { name: 'agosto', key: '8' },
+  { name: 'septiembre', key: '9' },
+  { name: 'octubre', key: '10' },
+  { name: 'noviembre', key: '11' },
+  { name: 'diciembre', key: '12' },
+];
+
 @Component({
   selector: 'app-add',
   templateUrl: './add.page.html',
@@ -29,7 +44,7 @@ export class AddPage implements OnInit {
     private sharingService: SharingService,
     private messagesService: MessagesService,
     private zone: NgZone,
-  ) {
+  ) {    
     this.divisionForm = this.formBuilder.group({
       name: ['', Validators.required],
     });
@@ -53,7 +68,7 @@ export class AddPage implements OnInit {
     });
     this.sharingService.currentTeams.subscribe(teams => {
       this.zone.run(() => {
-        this.teams = teams;
+        this.teams = teams;        
         this.selectedTeam = teams && teams[0] && teams[0].key;
       });
     });
@@ -85,8 +100,9 @@ export class AddPage implements OnInit {
     let opts = {
       name: this.teamForm.get('name').value,
       division,
-      amount: 0
+      payments: _.map(months, m => { return ({ month: m, amount: 0 }) })
     }
+    console.log(opts)
     this.messagesService.showLoading({ msg: 'Agreando equipo...' });
     this.firebaseService.createObject('teams', opts)
       .then(() => {

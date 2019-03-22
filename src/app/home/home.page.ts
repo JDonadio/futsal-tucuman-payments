@@ -3,22 +3,9 @@ import { SharingService } from '../services/sharing.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FirebaseService } from '../services/firebase.service';
 import { MessagesService } from '../services/messages.service';
+import { ModalController } from '@ionic/angular';
+import { ModalTeamPage } from '../modal-team/modal-team.page';
 import * as _ from 'lodash';
-
-const months = [
-  // { name: 'enero', key: 1 },
-  // { name: 'febrero', key: 2 },
-  { name: 'marzo', key: '3' },
-  { name: 'abril', key: '4' },
-  { name: 'mayo', key: '5' },
-  { name: 'junio', key: '6' },
-  { name: 'julio', key: '7' },
-  { name: 'agosto', key: '8' },
-  { name: 'septiembre', key: '9' },
-  { name: 'octubre', key: '10' },
-  { name: 'noviembre', key: '11' },
-  { name: 'diciembre', key: '12' },
-];
 
 @Component({
   selector: 'app-home',
@@ -40,12 +27,13 @@ export class HomePage implements OnInit {
     private firebaseService: FirebaseService,
     private sharingService: SharingService,
     private messagesService: MessagesService,
-    private zone: NgZone,
     private formBuilder: FormBuilder,
+    private modalCtrl: ModalController,
+    private zone: NgZone,
   ) {
     this.focusedTeam = null;
     this.editMode = false;
-    this.months = months;
+    // this.months = months;
     this.teamForm = this.formBuilder.group({
       name: ['', Validators.required],
       amount: [0, Validators.required],
@@ -63,7 +51,11 @@ export class HomePage implements OnInit {
     });
     this.sharingService.currentTeams.subscribe(teams => {
       this.zone.run(() => {
+        if (!teams) return;
         this.teams = teams;
+        this.teams.forEach(t => {
+          t.totalAmount = _.sumBy(t.payments, 'amount');
+        });
         this.selectedMonth = '3';
       });
     });
@@ -120,6 +112,22 @@ export class HomePage implements OnInit {
     this.messagesService.showConfirm({ 
       title: 'Eliminar equipo', 
       msg: `¿Estás seguro de eliminar a ${team.name.toUpperCase()}?`
-    }).then(() => this.remove(team))
+    }).then(resp => {
+      if (resp) this.remove(team)
+    });
+  }
+
+  async openModal(team: any) {
+    const modal = await this.modalCtrl.create({
+      component: ModalTeamPage,
+      componentProps: { ctx: team }
+    });
+    await modal.present();
+    const { data } = await modal.onDidDismiss();
+
+    if (data && data.edit) {
+      let month = data && data.month || '3';
+      this.changeEditMode(team)
+    }
   }
 }
