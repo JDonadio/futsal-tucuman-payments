@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Agregar</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <form [formGroup]="teamForm" (ngSubmit)="addTeam()">
+    <ion-item>
+      <ion-label position="stacked">Nombre de equipo</ion-label>
+      <ion-input type="text" name="name" formControlName="name" autofocus (keyup.enter)="addTeam()"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Categoría</ion-label>
+      <ion-select placeholder="Seleccionar categoría" (ionChange)="categoryChange($event)" formControlName="category">
+        <div *ngFor="let c of categories">
+          <ion-select-option [value]="c.key" required>{{c.name | uppercase}}</ion-select-option>
+        </div>
+      </ion-select>
+    </ion-item>
+    <ion-button class="btn btn-primary" expand="block" type="submit" [disabled]="teamForm.invalid" block>Agregar</ion-button>
+  </form>
+
+</ion-content>

@@ -1,4 +1,9 @@
-.welcome-card ion-img {
-  max-height: 35vh;
-  overflow: hidden;
+.close-button {
+  ion-icon {
+    color: var(--ion-color-primary);
+  }
+}
+table {
+  width: 100%;
+  border: 1px solid green;
 }
