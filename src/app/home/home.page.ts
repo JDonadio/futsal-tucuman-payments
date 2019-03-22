@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { SharingService } from '../services/sharing/sharing.service';
+import { SharingService } from '../services/sharing.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Plugins } from '@capacitor/core';
@@ -27,7 +27,7 @@ const months = [
 })
 export class HomePage implements OnInit {
 
-  public categories: any;
+  public divisions: any;
   public months: any;
   public teams: any;
   public editMode: boolean;
@@ -54,10 +54,10 @@ export class HomePage implements OnInit {
       amount: [0, Validators.required],
       category: [null, Validators.required],
     });
-    this.sharingService.currentCategories.subscribe(categories => {
-      this.categories = categories;
+    this.sharingService.currentDivisions.subscribe(divisions => {
+      this.divisions = divisions;
       this.zone.run(() => {
-        this.teamForm.patchValue({ category: categories && categories[0] ? categories[0].key : 0 });
+        this.teamForm.patchValue({ category: divisions && divisions[0] ? divisions[0].key : 0 });
       });
     });
     this.sharingService.currentTeams.subscribe(teams => {
@@ -99,7 +99,7 @@ export class HomePage implements OnInit {
       amount: parseInt(this.teamForm.get('amount').value),
       period: this.teamForm.get('period').value || 0,
       category: {
-        name: this.categories[category].name,
+        name: this.divisions[category].name,
         key: category
       }
     }

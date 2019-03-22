@@ -1,0 +1,23 @@
+.slides {
+  height: 100%;
+  padding-bottom: 2rem;
+}
+ion-card {
+  width: 100%;
+  height: 70%;
+  ion-card-content {
+    height: 90%;
+    form {
+      position: relative;
+      height: 90%;
+    }
+  }
+}
+ion-slide {
+  align-items: initial;
+}
+.submit {
+  position: absolute;
+  bottom: 5px;
+  width: 100%;
+}

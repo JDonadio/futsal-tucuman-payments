@@ -14,9 +14,9 @@ import { AngularFireAuthModule } from "@angular/fire/auth";
 import { AngularFireDatabase } from 'angularfire2/database';
 
 import { GLOBAL } from '../globals';
-import { AuthService } from './services/auth/auth.service';
+import { AuthService } from './services/auth.service';
 import { AuthGuard } from './guard/guard.guard';
-import { SharingService } from './services/sharing/sharing.service';
+import { SharingService } from './services/sharing.service';
 
 @NgModule({
   declarations: [AppComponent],

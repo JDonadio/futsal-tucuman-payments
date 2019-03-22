@@ -9,47 +9,69 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <table *ngIf="!editMode">
-    <tr><td>Nombre</td><td>Categoría</td><td>Aporte</td><td>Estado</td><td>Acciones</td></tr>
-    <tr *ngFor="let t of teams">
-      <td>{{t.name | uppercase}}</td>
-      <td>{{t.category.name | uppercase}}</td>
-      <td>{{t.amount || 0}}</td>
-      <td>{{t.amount <= 400 ? 'No' : t.amount > 400 && t.amount <= 600 ? 'Si' : 'Re si'}}</td>
-      <td>
-        <ion-button size="small" fill="clear" (click)="changeEditMode(t)"><ion-icon name="create"></ion-icon></ion-button>
-        <ion-button size="small" fill="clear" (click)="askForRemove(t)"><ion-icon name="trash"></ion-icon></ion-button>
-      </td>
-    </tr>
-  </table>
+<ion-content>
+  <ion-card *ngIf="!editMode">
+    <ion-card-header>
+      <ion-card-title>Equipos</ion-card-title>
+      <ion-card-subtitle>
+        <ion-row>
+          <ion-col>Nombre</ion-col>
+          <ion-col text-center>División</ion-col>
+          <ion-col text-center>Aporte $</ion-col>
+          <ion-col text-center>Estado</ion-col>
+          <ion-col text-center>Acciones</ion-col>
+        </ion-row>
+      </ion-card-subtitle>
+    </ion-card-header>
 
-  <form [formGroup]="teamForm" (ngSubmit)="edit()" *ngIf="editMode">
-    <ion-item>
-      <ion-label position="stacked">Nombre de equipo</ion-label>
-      <ion-input type="text" name="name" formControlName="name" autofocus (keyup.enter)="edit()"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Aporte</ion-label>
-      <ion-input type="number" name="amount" formControlName="amount" (keyup.enter)="edit()"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Período</ion-label>
-      <ion-select placeholder="Seleccionar período" (ionChange)="periodChange($event)" formControlName="period">
-        <div *ngFor="let m of months">
-          <ion-select-option value="m.value" required>{{m.name | uppercase}}</ion-select-option>
-        </div>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Categoría</ion-label>
-      <ion-select placeholder="Seleccionar categoría" (ionChange)="categoryChange($event)" formControlName="category">
-        <div *ngFor="let c of categories">
-          <ion-select-option [value]="c.key" required>{{c.name | uppercase}}</ion-select-option>
-        </div>
-      </ion-select>
-    </ion-item>
-    <ion-button class="btn btn-primary" expand="block" type="submit" [disabled]="teamForm.invalid"
-      block>Editar</ion-button>
-  </form>
+    <ion-card-content>
+      <ion-row *ngFor="let t of teams">
+        <ion-col>{{t.name | uppercase}}</ion-col>
+        <ion-col text-center>{{t.division.name | uppercase}}</ion-col>
+        <ion-col text-center>${{t.amount}}</ion-col>
+        <ion-col text-center>{{t.amount <= 400 ? 'No' : t.amount > 400 && t.amount <= 600 ? 'Si' : 'Re si'}}</ion-col>
+        <ion-col text-center>
+          <ion-button size="small" fill="clear" (click)="changeEditMode(t)"><ion-icon name="create"></ion-icon></ion-button>
+          <ion-button size="small" fill="clear" (click)="askForRemove(t)"><ion-icon name="trash"></ion-icon></ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="editMode">
+    <ion-card-header>
+      <ion-card-title>Editar equipo</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form [formGroup]="teamForm" (ngSubmit)="edit()" *ngIf="editMode">
+        <ion-item>
+          <ion-label position="stacked">Nombre de equipo</ion-label>
+          <ion-input type="text" formControlName="name" autofocus (keyup.enter)="edit()"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Aporte</ion-label>
+          <ion-input type="number" formControlName="amount" (keyup.enter)="edit()"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Período</ion-label>
+          <ion-select placeholder="Seleccionar período" (ionChange)="periodChange($event)" formControlName="period">
+            <div *ngFor="let m of months">
+              <ion-select-option value="m.value" required>{{m.name | uppercase}}</ion-select-option>
+            </div>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">División</ion-label>
+          <ion-select placeholder="Seleccionar División" (ionChange)="divisionChange($event)" formControlName="division">
+            <div *ngFor="let d of divisions">
+              <ion-select-option [value]="d.key" required>{{d.name | uppercase}}</ion-select-option>
+            </div>
+          </ion-select>
+        </ion-item>
+        <ion-button expand="block" type="submit" [disabled]="teamForm.invalid" block>Editar</ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

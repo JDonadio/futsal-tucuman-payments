@@ -1,25 +1,84 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Agregar</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Agregar
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
+  <ion-slides pager="true">
+    <ion-slide>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Jugador</ion-card-title>
+        </ion-card-header>
+  
+        <ion-card-content>
+          <form [formGroup]="playerForm" (ngSubmit)="addPlayer()">
+            <ion-item>
+              <ion-label position="stacked">Nombre</ion-label>
+              <ion-input type="text" #playerName formControlName="name"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Apellido</ion-label>
+              <ion-input type="text" formControlName="surname"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">Equipo</ion-label>
+              <ion-select formControlName="team" [value]="selectedTeam">
+                <ion-select-option *ngFor="let t of teams" value="{{t.key}}">{{t.name | uppercase}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-button class="btn submit" expand="block" type="submit" [disabled]="playerForm.invalid" block>Agregar</ion-button>
+          </form>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
 
-  <form [formGroup]="teamForm" (ngSubmit)="addTeam()">
-    <ion-item>
-      <ion-label position="stacked">Nombre de equipo</ion-label>
-      <ion-input type="text" name="name" formControlName="name" autofocus (keyup.enter)="addTeam()"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Categoría</ion-label>
-      <ion-select placeholder="Seleccionar categoría" (ionChange)="categoryChange($event)" formControlName="category">
-        <div *ngFor="let c of categories">
-          <ion-select-option [value]="c.key" required>{{c.name | uppercase}}</ion-select-option>
-        </div>
-      </ion-select>
-    </ion-item>
-    <ion-button class="btn btn-primary" expand="block" type="submit" [disabled]="teamForm.invalid" block>Agregar</ion-button>
-  </form>
+    <ion-slide>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Equipo</ion-card-title>
+        </ion-card-header>
+  
+        <ion-card-content>
+          <form [formGroup]="teamForm" (ngSubmit)="addTeam()">
+            <ion-item>
+              <ion-label position="stacked">Nombre</ion-label>
+              <ion-input type="text" #teamName formControlName="name"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label position="stacked">División</ion-label>
+              <ion-select formControlName="division" [value]="selectedDivision">
+                <ion-select-option *ngFor="let d of divisions" value="{{d.key}}">{{d.name | uppercase}}</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-button class="btn submit" expand="block" type="submit" [disabled]="teamForm.invalid" block>Agregar</ion-button>
+          </form>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
 
+    <ion-slide>
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>División</ion-card-title>
+        </ion-card-header>
+  
+        <ion-card-content>
+          <form [formGroup]="divisionForm" (ngSubmit)="addDivision()">
+            <ion-item>
+              <ion-label position="stacked">Nombre</ion-label>
+              <ion-input type="text" #divisionName formControlName="name"></ion-input>
+            </ion-item>
+            <ion-button class="btn submit" expand="block" type="submit" [disabled]="divisionForm.invalid" block>Agregar</ion-button>
+          </form>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
 </ion-content>

@@ -13,3 +13,14 @@
 ion-icon {
   color: var(--ion-color-secondary);
 }
+body {
+  font-size: 14px !important;
+}
+.swiper-pagination-bullet {
+  background: #262626;
+  padding: 3px;
+}
+.swiper-pagination-bullet-active {
+  background: var(--bullet-background-active);
+  padding: 5px;
+}
