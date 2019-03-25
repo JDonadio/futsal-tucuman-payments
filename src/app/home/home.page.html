@@ -7,10 +7,18 @@
       </ion-button>
     </ion-buttons>
     <ion-title *ngIf="!editMode">Home</ion-title>
+    <ion-title *ngIf="editMode">Editar equipo</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button (click)="showFilter()" *ngIf="!editMode">
+        <ion-icon slot="icon-only" name="more"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-searchbar debounce="500" placeholder="Buscar..." [(ngModel)]="searchText" (ionChange)="searchTeam()" *ngIf="!editMode"></ion-searchbar>
+
   <ion-card *ngIf="!editMode">
     <ion-card-header>
       <ion-card-title>Equipos</ion-card-title>
@@ -25,7 +33,7 @@
     </ion-card-header>
 
     <ion-card-content>
-      <ion-row *ngFor="let t of teams; let i = index" (click)="openModal(t)">
+      <ion-row *ngFor="let t of filteredTeams; let i = index" (click)="openModal(t)">
         <ion-col>{{t.name | uppercase}}</ion-col>
         <ion-col text-center>{{t.division.name | uppercase}}</ion-col>
         <ion-col text-center>${{t.totalAmount}}</ion-col>
@@ -37,10 +45,6 @@
   </ion-card>
 
   <ion-card *ngIf="editMode">
-    <ion-card-header>
-      <ion-card-title>Editar equipo</ion-card-title>
-    </ion-card-header>
-
     <ion-card-content>
       <form [formGroup]="teamForm" (ngSubmit)="edit()" *ngIf="editMode">
         <ion-item>
