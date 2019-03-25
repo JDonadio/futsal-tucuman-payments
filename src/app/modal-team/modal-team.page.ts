@@ -61,4 +61,17 @@ export class ModalTeamPage implements OnInit {
       this.messagesService.showToast({ msg: 'Ha ocurrido un error. No se pudo editar el equipo.' });
     }
   }
+  
+  async askForRemove() {
+    let resp = await this.messagesService.showConfirm({ title: 'Eliminar equipo', msg: `¿Estás seguro de eliminar a ${this.team.name.toUpperCase()}?` });
+    if (!resp) return;
+    
+    try {
+      this.firebaseService.removeObject(`teams/${this.team.key}`);
+      this.messagesService.showToast({ msg: `El equipo ${this.team.name} ha sido eliminado correctamente!` });
+    } catch (err) {
+      console.log(err);
+      this.messagesService.showToast({ msg: 'Ha ocurrido un error. No se pudo eliminar el equipo.' });
+    }
+  }
 }

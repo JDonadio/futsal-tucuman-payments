@@ -2,7 +2,11 @@ ion-row {
   align-items: center;
 }
 .edit {
-  border: 1px solid red;
+  -webkit-box-shadow: 0px 0px 17px 2px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 17px 2px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 17px 2px rgba(0,0,0,0.75);
+  border-radius: 3px;
+  margin-left: -10px;
 }
 ion-input {
   width: 100px;
@@ -10,16 +14,9 @@ ion-input {
   border: 1px solid #cccccc;
   text-align: center;
 }
-.close-button {
-  ion-icon {
-    color: var(--ion-color-primary);
-    padding-right: 1rem;
-  }
-}
 .status {
   ion-icon {
     font-size: 1.5rem;
-    color: var(--ion-color-primary);
   }
 }
 .red {

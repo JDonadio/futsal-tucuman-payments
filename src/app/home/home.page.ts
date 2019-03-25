@@ -88,25 +88,6 @@ export class HomePage implements OnInit {
     }
   }
 
-  remove(team) {
-    try {
-      this.firebaseService.removeObject(`teams/${team.key}`);
-      this.messagesService.showToast({ msg: `El equipo ${team.name} ha sido eliminado correctamente!` });
-    } catch (err) {
-      console.log(err);
-      this.messagesService.showToast({ msg: 'Ha ocurrido un error. No se pudo eliminar el equipo.' });
-    }
-  }
-
-  async askForRemove(team) {
-    this.messagesService.showConfirm({ 
-      title: 'Eliminar equipo', 
-      msg: `¿Estás seguro de eliminar a ${team.name.toUpperCase()}?`
-    }).then(resp => {
-      if (resp) this.remove(team)
-    });
-  }
-
   async openModal(team: any) {
     const modal = await this.modalCtrl.create({
       component: ModalTeamPage,
