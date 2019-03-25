@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabase } from 'angularfire2/database';
 import { Router } from '@angular/router';
-import * as firebase from 'firebase/app';
+import { SharingService } from './sharing.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,44 +10,35 @@ export class AuthService {
 
   constructor(
     private afAuth: AngularFireAuth,
-    private db: AngularFireDatabase,
-    private myRoute: Router
+    private myRouter: Router,
+    private sharingService: SharingService,
   ) { }
 
   isLoggednIn() {
-    return localStorage.getItem('user') !== null;
+    let user = this.afAuth.auth.currentUser;
+    let localUser = JSON.parse(localStorage.getItem('user'));
+    console.log(localUser, user);
+    return (user != null || localUser != null);
   }
 
-  login(userData: any) {
-    localStorage.setItem('user', JSON.stringify(userData));
-    this.myRoute.navigate(['home']);
-    this.db.object('users/' + userData.nickname).valueChanges().subscribe((user: any) => {
-      if (user && user.role == 'admin') userData.role = 'admin';
-      var ref = this.db.object('users');
-      var key = userData.nickname;
-      ref.update({ [key]: userData });
-      return;
+  login(email, password): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.afAuth.auth.signInWithEmailAndPassword(email, password)
+        .then((resp: any) => {
+          localStorage.setItem('user', JSON.stringify(resp.user.email));
+          this.sharingService.setUser(resp.user.email);
+          resolve(resp.user.email);
+        })
+        .catch(err => reject(err));
     });
-  }
-
-  async loginWithGoogle(nickname: string) {
-    try {
-      const res = await this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-      localStorage.setItem('user', JSON.stringify(res.additionalUserInfo));
-      console.log(res);
-      this.myRoute.navigate(['home']);
-      return;
-    }
-    catch (err) {
-      console.log(err);
-      this.myRoute.navigate(['login']);
-      return;
-    }
   }
 
   logout() {
     console.log('Logged Out!');
-    this.myRoute.navigate(['login']);
-    return this.afAuth.auth.signOut();
+    this.myRouter.navigate(['/login']);
+    this.afAuth.auth.signOut();
+    localStorage.removeItem('user');
+    this.sharingService.setUser(null);
+    return;
   }
 }

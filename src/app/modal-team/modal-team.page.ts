@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { ModalController, NavParams } from '@ionic/angular';
 import { FirebaseService } from '../services/firebase.service';
 import { MessagesService } from '../services/messages.service';
+import { SharingService } from '../services/sharing.service';
 import * as _ from 'lodash';
 
 @Component({
@@ -16,6 +17,7 @@ export class ModalTeamPage implements OnInit {
   public months: any;
   public editFor: any;
   public editMode: boolean;
+  public isLoggedIn: boolean;
   public amount: number;
 
   constructor(
@@ -23,6 +25,8 @@ export class ModalTeamPage implements OnInit {
     private navParams: NavParams,
     private firebaseService: FirebaseService,
     private messagesService: MessagesService,
+    private sharingService: SharingService,
+    private zone: NgZone,
   ) {
     this.editFor = {};
     this.editMode = false;
@@ -32,6 +36,11 @@ export class ModalTeamPage implements OnInit {
   ngOnInit() {
     this.team = _.cloneDeep(this.navParams.data.ctx);
     this.title = this.team.name.toUpperCase() + ' - División ' + this.team.division.name.toUpperCase();
+    this.sharingService.currentUser.subscribe(user => {
+      this.zone.run(() => {
+        this.isLoggedIn = user;
+      });
+    });
   }
 
   close() {

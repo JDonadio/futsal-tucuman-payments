@@ -19,10 +19,11 @@ export class HomePage implements OnInit {
   public teams: any;
   public filteredTeams: any;
   public editMode: boolean;
+  public isLoggedIn: boolean;
   public teamForm: FormGroup;
   public selectedDivision: string;
   public selectedMonth: string;
-  public searchText;
+  public searchText: string;
   private focusedTeam: string;
 
   constructor(
@@ -49,6 +50,11 @@ export class HomePage implements OnInit {
       this.zone.run(() => {
         this.divisions = divisions;
         this.selectedDivision = divisions && divisions[0] && divisions[0].key;
+      });
+    });
+    this.sharingService.currentUser.subscribe(user => {
+      this.zone.run(() => {
+        this.isLoggedIn = user;
       });
     });
     this.sharingService.currentTeams.subscribe(teams => {

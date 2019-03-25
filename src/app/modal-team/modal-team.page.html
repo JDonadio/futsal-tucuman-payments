@@ -4,7 +4,7 @@
       <ion-button (click)="close()" class="close-button"><ion-icon slot="icon-only" name="arrow-back"></ion-icon></ion-button>
     </ion-buttons>
     <ion-title text-center>{{title}}</ion-title>
-    <ion-buttons slot="primary">
+    <ion-buttons slot="primary" *ngIf="isLoggedIn">
       <ion-button (click)="askForRemove()" fill="clear"><ion-icon name="trash" color="danger"></ion-icon></ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -16,17 +16,17 @@
       <ion-card-title>Pagos</ion-card-title>
       <ion-card-subtitle>
         <ion-row>
-          <ion-col>Mes</ion-col>
+          <ion-col size="4">Mes</ion-col>
           <ion-col text-center>Aporte $</ion-col>
           <ion-col text-center>Estado</ion-col>
-          <ion-col text-center size="3">Acciones</ion-col>
+          <ion-col text-center *ngIf="isLoggedIn">Acciones</ion-col>
         </ion-row>
       </ion-card-subtitle>
     </ion-card-header>
 
     <ion-card-content>
       <ion-row *ngFor="let p of team.payments; let i = index" [ngClass]="{'edit': editFor[i]}">
-        <ion-col>{{p.month.name | uppercase}}</ion-col>
+        <ion-col size="4">{{p.month.name | uppercase}}</ion-col>
         <ion-col text-center *ngIf="!editFor[i]">${{p.amount}}</ion-col>
         <ion-col text-center *ngIf="editFor[i]">
           <ion-input type="number" [(ngModel)]="p.amount"></ion-input>
@@ -36,21 +36,15 @@
           <ion-icon name="heart-half" *ngIf="p.amount > 600 && p.amount < 1000" class="orange"></ion-icon>
           <ion-icon name="heart" *ngIf="p.amount >= 1000"></ion-icon>
         </ion-col>
-        <ion-col text-center>
+        <ion-col text-center *ngIf="isLoggedIn">
           <div class="action-buttons">
             <ion-button size="small" fill="clear" (click)="edit(i)" *ngIf="!editFor[i]"><ion-icon name="create"></ion-icon></ion-button>
             <ion-button size="small" fill="clear" (click)="cancelEdition(i)" *ngIf="editFor[i]"><ion-icon name="close"></ion-icon></ion-button>
           </div>
         </ion-col>
-        <!-- <ion-col text-center size="3">
-          <div class="action-buttons">
-            <ion-button size="small" fill="clear" (click)="changeEditMode(t)"><ion-icon name="create"></ion-icon></ion-button>
-            <ion-button size="small" fill="clear" (click)="openModal(t)"><ion-icon name="information-circle-outline"></ion-icon></ion-button>
-          </div>
-        </ion-col> -->
       </ion-row>
     </ion-card-content>
 
-    <ion-button class="sbm" expand="block" block (click)="confirmEdition()">Confirmar edición</ion-button>
+    <ion-button class="sbm" expand="block" block (click)="confirmEdition()" *ngIf="isLoggedIn">Confirmar edición</ion-button>
   </ion-card>
 </ion-content>

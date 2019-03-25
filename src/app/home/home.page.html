@@ -27,7 +27,7 @@
           <ion-col>Nombre</ion-col>
           <ion-col text-center>División</ion-col>
           <ion-col text-center>Aporte anual</ion-col>
-          <ion-col text-center>Editar</ion-col>
+          <ion-col text-center *ngIf="isLoggedIn">Editar</ion-col>
         </ion-row>
       </ion-card-subtitle>
     </ion-card-header>
@@ -37,7 +37,7 @@
         <ion-col>{{t.name | uppercase}}</ion-col>
         <ion-col text-center>{{t.division.name | uppercase}}</ion-col>
         <ion-col text-center>${{t.totalAmount}}</ion-col>
-        <ion-col text-center>
+        <ion-col text-center *ngIf="isLoggedIn">
           <ion-button size="small" fill="clear" (click)="changeEditMode(t)"><ion-icon name="create"></ion-icon></ion-button>
         </ion-col>
       </ion-row>

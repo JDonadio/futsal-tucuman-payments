@@ -7,6 +7,9 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class SharingService {
 
+  private user = new BehaviorSubject<any>(null);
+  currentUser = this.user.asObservable();
+
   private divisions = new BehaviorSubject<any>(null);
   currentDivisions = this.divisions.asObservable();
 
@@ -22,6 +25,9 @@ export class SharingService {
   constructor(
     private db: AngularFireDatabase,
   ) {
+    let localUser = JSON.parse(localStorage.getItem('user'));
+    this.user.next(localUser);
+
     var divisions = this.db.database.ref('divisions');
     divisions.on('value', (snap: any) => {
       let divisions = [];
@@ -38,6 +44,10 @@ export class SharingService {
     calendar.on('value', (snap: any) => {
       this.setCalendar(snap.val());
     });
+  }
+  
+  setUser(user: any) {
+    this.user.next(user);
   }
   
   setDivisions(divisions: any) {
