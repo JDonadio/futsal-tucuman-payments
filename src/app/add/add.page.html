@@ -13,10 +13,7 @@
   <ion-slides pager="true">
     <ion-slide>
       <ion-card>
-        <ion-card-header>
-          <ion-card-title>Jugador</ion-card-title>
-        </ion-card-header>
-  
+        <div class="ttl">Jugador</div>
         <ion-card-content>
           <form [formGroup]="playerForm" (ngSubmit)="addPlayer()">
             <ion-item>
@@ -40,11 +37,8 @@
     </ion-slide>
 
     <ion-slide>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Equipo</ion-card-title>
-        </ion-card-header>
-  
+      <ion-card>  
+        <div class="ttl">Equipo</div>
         <ion-card-content>
           <form [formGroup]="teamForm" (ngSubmit)="addTeam()">
             <ion-item>
@@ -64,11 +58,8 @@
     </ion-slide>
 
     <ion-slide>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>División</ion-card-title>
-        </ion-card-header>
-  
+      <ion-card>  
+        <div class="ttl">División</div>
         <ion-card-content>
           <form [formGroup]="divisionForm" (ngSubmit)="addDivision()">
             <ion-item>

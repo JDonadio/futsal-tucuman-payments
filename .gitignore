@@ -18,6 +18,9 @@ npm-debug.log*
 .sass-cache/
 .tmp/
 .versions/
+.firebase/
+.firebaserc
+firebase.json
 coverage/
 www/
 node_modules/

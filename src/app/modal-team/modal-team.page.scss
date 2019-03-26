@@ -9,10 +9,10 @@ ion-row {
   margin-left: -10px;
 }
 ion-input {
-  width: 100px;
+  width: 50px;
   margin: auto;
   border: 1px solid #cccccc;
-  text-align: center;
+  border-radius: 5px;
 }
 .status {
   ion-icon {
@@ -24,4 +24,9 @@ ion-input {
 }
 .orange {
   color: orange !important;
+}
+@media (min-width: 600px) {
+  ion-input {
+    width: 80px;
+  }
 }

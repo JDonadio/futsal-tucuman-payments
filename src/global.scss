@@ -11,7 +11,19 @@
 @import '~@ionic/angular/css/flex-utils.css';
 
 ion-icon {
-  color: var(--ion-color-primary);
+  color: var(--ion-color-primary) !important;
+}
+ion-toolbar {
+  --background: #ffffff;
+  --ion-color-base: #ffffff !important;
+}
+.header {
+  ion-icon {
+    color: var(--ion-color-primary) !important;
+  }
+}
+.header:after {
+  background-image: none;
 }
 body {
   font-size: 14px !important;
@@ -23,4 +35,16 @@ body {
 .swiper-pagination-bullet-active {
   background: var(--bullet-background-active);
   padding: 5px;
+}
+ion-card-title {
+  padding-bottom: .5rem;
+}
+ion-row {
+  align-items: center;
+}
+.ttl {
+  text-align: center;
+  padding: 10px;
+  font-size: 24px;
+  font-weight: 600;
 }
