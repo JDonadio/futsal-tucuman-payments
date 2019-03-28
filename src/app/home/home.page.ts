@@ -76,9 +76,9 @@ export class HomePage implements OnInit {
       return;
     }
 
-    let byName = _.filter(this.teams, t => { return t.name.includes(this.searchText) });
-    let byDivision = _.filter(this.teams, t => { return t.division.name.includes(this.searchText) });
-    let byAmount = _.filter(this.teams, t => { return t.totalAmount == this.searchText });
+    let byName = _.filter(this.teams, t => { return t.name.toLowerCase().includes(this.searchText.toLowerCase()) });
+    let byDivision = _.filter(this.teams, t => { return t.division.name.toLowerCase().includes(this.searchText.toLowerCase()) });
+    let byAmount = _.filter(this.teams, t => { return t.totalAmount <= this.searchText });
 
     if (!_.isEmpty(byName)) this.filteredTeams = _.clone(byName);
     else if (!_.isEmpty(byDivision)) this.filteredTeams = _.clone(byDivision);
