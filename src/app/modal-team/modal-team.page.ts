@@ -78,6 +78,7 @@ export class ModalTeamPage implements OnInit {
     try {
       this.firebaseService.removeObject(`teams/${this.team.key}`);
       this.messagesService.showToast({ msg: `El equipo ${this.team.name} ha sido eliminado correctamente!` });
+      this.modalCtrl.dismiss();
     } catch (err) {
       console.log(err);
       this.messagesService.showToast({ msg: 'Ha ocurrido un error. No se pudo eliminar el equipo.' });
