@@ -6,8 +6,8 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title *ngIf="!editMode">Home</ion-title>
-    <ion-title *ngIf="editMode">Editar equipo</ion-title>
+    <ion-title *ngIf="!editMode" text-center>ATFUTS</ion-title>
+    <ion-title *ngIf="editMode" text-center>Editar equipo</ion-title>
     <ion-buttons slot="primary">
       <ion-button (click)="showFilter()" *ngIf="!editMode">
         <ion-icon slot="icon-only" name="options"></ion-icon>

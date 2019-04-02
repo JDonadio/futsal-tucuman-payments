@@ -11,6 +11,7 @@ export class ResumePage implements OnInit {
   public divisions: any;
   public teamsIndexedByDivision: any;
   public teamsFor: any;
+  public total: number;
 
   constructor(
     private sharingService: SharingService,
@@ -18,6 +19,7 @@ export class ResumePage implements OnInit {
   ) {
     this.teamsIndexedByDivision = {};
     this.teamsFor = {};
+    this.total = 0;
   }
 
   ngOnInit() {
@@ -35,6 +37,9 @@ export class ResumePage implements OnInit {
           Object.assign(teams, { totalAmount: _.sumBy(teams, 'totalAmount') });
         });
         this.teamsIndexedByDivision = indexedByDivisions;
+        console.log(indexedByDivisions);
+        
+        this.total = _.sumBy(_.values(indexedByDivisions), 'totalAmount');
       });
     });
   }
