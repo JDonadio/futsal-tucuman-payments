@@ -18,7 +18,6 @@
 
 <ion-content>
   <ion-searchbar debounce="500" placeholder="Buscar..." [(ngModel)]="searchText" (ionChange)="searchTeam()" *ngIf="!editMode"></ion-searchbar>
-
   
   <ion-card *ngIf="!editMode">
     <div class="ttl">Equipos</div>

@@ -7,6 +7,24 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
+  <ion-card>
+    <div class="ttl">Recaudación total</div>
+    <ion-card-header>
+      <ion-card-subtitle>
+        <ion-row>
+          <ion-col>División</ion-col>
+          <ion-col text-center>Aporte</ion-col>
+        </ion-row>
+      </ion-card-subtitle>
+    </ion-card-header>
 
+    <ion-card-content>
+      <ion-row *ngFor="let d of divisions">
+        <ion-col>{{d.name | uppercase}}</ion-col>
+        <ion-col text-center>${{teamsIndexedByDivision[d.key] && teamsIndexedByDivision[d.key].totalAmount ?
+          teamsIndexedByDivision[d.key].totalAmount : '0'}}</ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

@@ -17,7 +17,6 @@ export class AuthService {
   isLoggednIn() {
     let user = this.afAuth.auth.currentUser;
     let localUser = JSON.parse(localStorage.getItem('user'));
-    console.log(localUser, user);
     return (user != null || localUser != null);
   }
 

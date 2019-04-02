@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { BehaviorSubject } from 'rxjs';
+import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,7 @@ export class SharingService {
     var teams = this.db.database.ref('teams');
     teams.on('value', (snap: any) => {
       let teams = [];
-      snap.forEach(data => { teams.push({ key: data.key, ...data.val() }) });
+      snap.forEach(data => { teams.push({ key: data.key, ...data.val(), totalAmount: _.sumBy(data.val().payments, 'amount') }) });
       this.setTeams(teams);
     });
     var calendar = this.db.database.ref('calendar');

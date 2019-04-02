@@ -60,9 +60,6 @@ export class HomePage implements OnInit {
     this.sharingService.currentTeams.subscribe(teams => {
       this.zone.run(() => {
         if (!teams) return;
-        teams.forEach(t => {
-          t.totalAmount = _.sumBy(t.payments, 'amount');
-        });
         this.teams = _.orderBy(teams, t => t.division.name);
         this.filteredTeams = _.clone(this.teams);
         this.selectedMonth = '3';
