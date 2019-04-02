@@ -20,11 +20,21 @@
     </ion-card-header>
 
     <ion-card-content>
-      <ion-row *ngFor="let d of divisions">
-        <ion-col>{{d.name | uppercase}}</ion-col>
-        <ion-col text-center>${{teamsIndexedByDivision[d.key] && teamsIndexedByDivision[d.key].totalAmount ?
-          teamsIndexedByDivision[d.key].totalAmount : '0'}}</ion-col>
-      </ion-row>
+      <div *ngFor="let d of divisions" (click)="teamsFor[d.key] = !teamsFor[d.key]">
+        <ion-row>
+          <ion-col>{{d.name | uppercase}}</ion-col>
+          <ion-col text-center>
+            ${{teamsIndexedByDivision[d.key] && teamsIndexedByDivision[d.key].totalAmount ?
+            teamsIndexedByDivision[d.key].totalAmount : '0'}}
+          </ion-col>
+        </ion-row>
+        <div *ngIf="teamsFor[d.key]" [ngClass]="{'teams-for': teamsIndexedByDivision[d.key]}">
+          <ion-row *ngFor="let t of teamsIndexedByDivision[d.key]">
+            <ion-col>{{t.name | uppercase}}</ion-col>
+            <ion-col>${{t.totalAmount}}</ion-col>
+          </ion-row>
+        </div>
+      </div>
     </ion-card-content>
   </ion-card>
 </ion-content>

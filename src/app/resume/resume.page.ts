@@ -10,12 +10,14 @@ import * as _ from 'lodash';
 export class ResumePage implements OnInit {
   public divisions: any;
   public teamsIndexedByDivision: any;
+  public teamsFor: any;
 
   constructor(
     private sharingService: SharingService,
     private zone: NgZone,
   ) {
     this.teamsIndexedByDivision = {};
+    this.teamsFor = {};
   }
 
   ngOnInit() {
