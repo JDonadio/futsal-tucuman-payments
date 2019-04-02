@@ -32,13 +32,25 @@ ion-toolbar {
   }
   ion-title {
     color: #fff;
-    font-family: 'Roboto Condensed', sans-serif;
     text-transform: uppercase;
   }
 }
 
 ion-card {
   --background: #fff !important;
+}
+
+ion-card-title {
+  padding-bottom: .5rem;
+}
+
+ion-row {
+  align-items: center;
+  cursor: pointer;
+}
+
+.sidemenu {
+  cursor: pointer;
 }
 
 .header:after {
@@ -49,24 +61,16 @@ body {
   font-size: 14px !important;
 }
 
-ion-content {
-  background: #f8f8f8;
-}
-
 .swiper-pagination-bullet {
   background: #262626;
   padding: 3px;
 }
+
 .swiper-pagination-bullet-active {
   background: var(--bullet-background-active);
   padding: 5px;
 }
-ion-card-title {
-  padding-bottom: .5rem;
-}
-ion-row {
-  align-items: center;
-}
+
 .ttl {
   text-align: center;
   padding: 10px;

@@ -47,6 +47,10 @@ export class AppComponent {
     this.myRouter.navigate(['/login']);
   }
 
+  resume() {
+    this.myRouter.navigate(['/resume']);
+  }
+
   add() {
     this.myRouter.navigate(['/add']);
   }
