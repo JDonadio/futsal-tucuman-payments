@@ -6,7 +6,7 @@
           <ion-title>Menu</ion-title>
         </ion-toolbar>
       </ion-header>
-      <ion-content>
+      <ion-content class="sidemenu">
         <ion-list>
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
             <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
@@ -15,26 +15,29 @@
                 {{p.title}}
               </ion-label>
             </ion-item>
-            <ion-item (click)="login()" *ngIf="!isLoggedIn" class="sidemenu">
+            <ion-item (click)="login()" *ngIf="!isLoggedIn" class="menu-item">
               <ion-icon slot="start" name="log-in"></ion-icon>
               <ion-label>Ingresar</ion-label>
             </ion-item>
             <div *ngIf="isLoggedIn">
-              <ion-item (click)="resume()" class="sidemenu">
+              <ion-item (click)="resume()" class="menu-item">
                 <ion-icon slot="start" name="stats"></ion-icon>
                 <ion-label>Resumen</ion-label>
               </ion-item>
-              <ion-item (click)="add()" class="sidemenu">
+              <ion-item (click)="add()" class="menu-item">
                 <ion-icon slot="start" name="add"></ion-icon>
                 <ion-label>Agregar</ion-label>
               </ion-item>
-              <ion-item (click)="logout()" class="sidemenu">
+              <ion-item (click)="logout()" class="menu-item">
                 <ion-icon slot="start" name="log-out"></ion-icon>
                 <ion-label>Salir</ion-label>
               </ion-item>
             </div>
           </ion-menu-toggle>
         </ion-list>
+        <div class="logo">
+          <ion-img src="assets/icon/futsal-logo.jpg"></ion-img>
+        </div>
       </ion-content>
     </ion-menu>
     <ion-router-outlet main></ion-router-outlet>

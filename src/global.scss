@@ -50,7 +50,18 @@ ion-row {
 }
 
 .sidemenu {
+  --background: #fff !important;
+}
+
+.menu-item {
   cursor: pointer;
+}
+
+.logo {
+  position: absolute;
+  bottom: 0;
+  width: 50%;
+  margin: 0 25% 10% 25%;
 }
 
 .header:after {
